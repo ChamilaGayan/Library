@@ -25,6 +25,9 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+
+        // $book = Book::all();
+        // return view('book.home', compact('book'));
     }
 
     public function show()
@@ -32,4 +35,14 @@ class HomeController extends Controller
         $book = Book::get();
         return view('home', ['books'=> $book]);
     }
+
+
+    // public function update(Request $request, $id)
+    // {
+    //     // $book = Book::get($id);
+    //     $book->status = $request->get('id');
+    //     $book->status = $request->get('stat');
+    //     $book->update();
+    //     // return view('home', ['books'=> $book]);
+    // }
 }

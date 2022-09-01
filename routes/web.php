@@ -19,4 +19,11 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'show'])->name('home');
+Route::any('/home', [App\Http\Controllers\HomeController::class, 'show'])->name('home');
+
+Route::put('/home', [App\Http\Controllers\HomeController::class, 'update'])->name('updateBook');
+
+Route::get('edit-book/{id}', [App\Http\Controllers\BookController::class, 'edit']);
+Route::put('update-book/{id}', [App\Http\Controllers\BookController::class, 'update']);
+
+// Route::put('handover-book/{id}', [App\Http\Controllers\BookController::class, 'handover']);

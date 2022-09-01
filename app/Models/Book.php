@@ -15,6 +15,7 @@ class Book extends Model
         'title',
         'description',
         'genre_type',
-        'price'
+        'price',
+        'status'
     ];
 }

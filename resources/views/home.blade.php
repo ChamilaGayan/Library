@@ -35,7 +35,8 @@
                   <h6 class="m-0 font-weight-bold text-primary">DataTables</h6>
                 </div>
                 <div class="table-responsive p-3">
-                  <form method="POST" action="">
+                  <form method="POST" action="{{ route('updateBook') }}">
+                    @csrf
                   <table class="table align-items-center table-flush" id="dataTable">
                     <thead class="thead-light">
                       <tr>
@@ -49,10 +50,8 @@
                       </tr>
                     </thead>
                     <tbody>
-                     
+                   
                       @foreach ($books as $book)
-
-                      <tr>
                         <td>{{$book->id}}</td>
                         <td>{{$book->title}}</td>
                         <td>{{$book->description}}</td>
@@ -61,18 +60,20 @@
 
                         @if ($book->status == '0')
                         <td><label class="badge badge-success">Available</label></td>
-                        <td><button type="submit" class="btn btn-success btn-sm" name="buy">Buy</button></td>
+                        <input type="hidden" name="id" value="{{$book->id}}" class="form-control">
+                        <input type="hidden" name="stat" value="1" class="form-control">
+                        <td><a href="{{ url('edit-book/'.$book->id) }}" class="btn btn-success btn-sm">Buy Book</a></td>
                         @else
                         <td><label class="badge badge-warning">Purchased</label></td>
-                        <td><button type="button" class="btn btn-warning btn-sm" name="buy" disabled>Purchased</button></td>
+                        <td><a href="{{ url('edit-book/'.$book->id) }}" class="btn btn-primary btn-sm">View Book</a></td>
                         @endif
                         </tr>
-
+                     
                       @endforeach
 
                     </tbody>
                   </table>
-                  </form>
+                </form>
                 </div>
               </div>
             </div>
@@ -96,7 +97,7 @@
 
 
   <!-- Modal -->
-  <form method="POST" action="">
+ 
 <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered" role="document">
       <div class="modal-content">
@@ -108,7 +109,10 @@
         </div>
         <embed src='img/book.jpg' class='img-fluid' width='500' height='500' />
         @foreach ($books as $book)
-
+        <form action="{{ url('update-book/'.$book->id) }}" method="POST">
+          @csrf
+          @method('PUT')
+        @if (Auth::user()->id == $book->user_id)
         @if ($book->status == '1')
         <div class="modal-body">
           <h6 class="">Book ID - {{$book->id}}</h6> 
@@ -117,20 +121,27 @@
           <h6 class="">Genre/Type - {{$book->genre_type}}</h6> 
           <h6 class="">price - {{$book->price}}</h6> 
           <h6 class="">Date - {{date('Y-m-d', strtotime($book->created_at))}}</h6>
+          <input type="hidden" name="status" value="0" class="form-control">
         </div>
         <div class="modal-footer">
           <button type="submit" class="btn btn-primary">Hand-over</button>
         </div>
         @else
    
+        @endif            
+        @else
+            
         @endif
 
+
+       
+      </form>
   
         @endforeach
       </div>
     </div>
   </div>
-  </form>
+ 
   <script src="vendor/jquery/jquery.min.js"></script>
   <script src="vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="vendor/jquery-easing/jquery.easing.min.js"></script>
